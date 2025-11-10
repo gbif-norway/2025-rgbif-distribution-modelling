@@ -11,6 +11,7 @@
 
 <meta name="author" content="Dag Endresen, https://orcid.org/0000-0002-2352-5497" />
 
+<meta name="date" content="2025-11-11" />
 
 <title>Efficient data access for data reporting</title>
 
@@ -351,44 +352,49 @@ display: none;
 
 <h1 class="title toc-ignore">Efficient data access for data
 reporting</h1>
-<h3 class="subtitle">GBIF GB32 Global Nodes Training, Bogota,
-Colombia</h3>
+<h3 class="subtitle">GBIF Data Access Training, rgbif</h3>
 <h4 class="author">Dag Endresen, <a href="https://orcid.org/0000-0002-2352-5497" class="uri">https://orcid.org/0000-0002-2352-5497</a></h4>
-<h4 class="date">October 16-17, 2025</h4>
+<h4 class="date">2025-11-11</h4>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#gbif-sql" id="toc-gbif-sql">GBIF SQL</a></li>
+<li><a href="#introduction-to-using-sql-with-rgbif" id="toc-introduction-to-using-sql-with-rgbif">Introduction to using SQL
+with rgbif</a>
+<ul>
+<li><a href="#rgbif-sql" id="toc-rgbif-sql">RGBIF SQL</a></li>
+<li><a href="#multi-dimension-counts" id="toc-multi-dimension-counts">Multi-dimension Counts</a></li>
+</ul></li>
 </ul>
 </div>
 
-<div id="gbif-sql" class="section level2">
-<h2>GBIF SQL</h2>
+<div id="introduction-to-using-sql-with-rgbif" class="section level1">
+<h1>Introduction to using SQL with rgbif</h1>
+<div id="rgbif-sql" class="section level2">
+<h2>RGBIF SQL</h2>
 <pre class="r"><code>library(rgbif)
+occ_download_sql(&quot;SELECT datasetKey, countryCode, COUNT(*) FROM occurrence WHERE continent = &#39;EUROPE&#39; GROUP BY datasetKey, countryCode&quot;)
+# https://docs.ropensci.org/rgbif/articles/gbif_sql_downloads.html</code></pre>
+<pre class="r"><code># test if your download is set up correctly 
+# occ_download_sql_prep(&quot;SELECT datasetKey, countryCode, COUNT(*) FROM occurrence WHERE continent = &#39;EUROPE&#39; GROUP BY datasetKey, countryCode&quot;)
 occ_download_sql(&quot;SELECT datasetKey, countryCode, COUNT(*) FROM occurrence WHERE continent = &#39;EUROPE&#39; GROUP BY datasetKey, countryCode&quot;)</code></pre>
-<pre><code>## &lt;&lt;gbif download sql&gt;&gt;
-##   Your download is being processed by GBIF:
-##   https://www.gbif.org/occurrence/download/0030933-250920141307145
-##   Check status with
-##   occ_download_wait(&#39;0030933-250920141307145&#39;)
-##   After it finishes, use
-##   d &lt;- occ_download_get(&#39;0030933-250920141307145&#39;) %&gt;%
-##     occ_download_import()
-##   to retrieve your download.
-## Download Info:
-##   Username: dag.endresen
-##   E-mail: dag.endresen@gmail.com
-##   Format: SQL_TSV_ZIP
-##   Download key: 0030933-250920141307145
-##   Created: 2025-09-29T19:06:47.880+00:00
-## Citation Info:  
-##   Please always cite the download DOI when using this data.
-##   https://www.gbif.org/citation-guidelines
-##   DOI: 
-##   Citation:
-##   GBIF Occurrence Download https://www.gbif.org/occurrence/download/0030933-250920141307145 Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2025-09-29</code></pre>
+<pre class="r"><code># fetch the download and load the data
+occ_download_get(&quot;0000967-240425142415019&quot;) %&gt;%
+  occ_download_import()</code></pre>
+</div>
+<div id="multi-dimension-counts" class="section level2">
+<h2>Multi-dimension Counts</h2>
+<pre class="r"><code>sql &lt;-
+&quot;
+SELECT publishingcountry, specieskey, COUNT(*) as occurrence_count
+FROM occurrence
+WHERE publishingcountry IS NOT NULL AND specieskey IS NOT NULL
+GROUP BY publishingcountry, specieskey
+ORDER BY occurrence_count DESC;
+&quot;
+occ_download_sql(sql)</code></pre>
+</div>
 </div>
 
 

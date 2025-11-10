@@ -1,11 +1,11 @@
 ---
 title: "Efficient data access for data reporting"
-subtitle: "GBIF GB32 Global Nodes Training, Bogota, Colombia"
+subtitle: "GBIF Data Access Training, rgbif"
 author: "Dag Endresen, https://orcid.org/0000-0002-2352-5497"
-date:   "October 16-17, 2025"
+date:   "2025-11-11"
 output:
   html_document:
-    keep_md: false
+    keep_md: true
     toc: true
     toc_depth: 3
 ---
@@ -18,19 +18,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## RGBIF SQL
 
-```{r rgbif_sql eval=FALSE}
+```{r eval=FALSE}
 library(rgbif)
 occ_download_sql("SELECT datasetKey, countryCode, COUNT(*) FROM occurrence WHERE continent = 'EUROPE' GROUP BY datasetKey, countryCode")
 # https://docs.ropensci.org/rgbif/articles/gbif_sql_downloads.html
 ```
 
-```{r rgbif_sql eval=FALSE}
+```{r eval=FALSE}
 # test if your download is set up correctly 
 # occ_download_sql_prep("SELECT datasetKey, countryCode, COUNT(*) FROM occurrence WHERE continent = 'EUROPE' GROUP BY datasetKey, countryCode")
 occ_download_sql("SELECT datasetKey, countryCode, COUNT(*) FROM occurrence WHERE continent = 'EUROPE' GROUP BY datasetKey, countryCode")
 ```
 
-```{r rgbif_sql eval=FALSE}
+```{r eval=FALSE}
 # fetch the download and load the data
 occ_download_get("0000967-240425142415019") %>%
   occ_download_import()
@@ -38,7 +38,7 @@ occ_download_get("0000967-240425142415019") %>%
 
 ## Multi-dimension Counts
 
-```{r rgbif_sql eval=FALSE}
+```{r eval=FALSE}
 sql <-
 "
 SELECT publishingcountry, specieskey, COUNT(*) as occurrence_count

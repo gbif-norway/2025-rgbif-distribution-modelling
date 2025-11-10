@@ -1,11 +1,11 @@
 ---
 title: "Efficient data access for data reporting"
-subtitle: "GBIF GB32 Global Nodes Training, Bogota, Colombia"
+subtitle: "GBIF Data Access Training, rgbif"
 author: "Dag Endresen, https://orcid.org/0000-0002-2352-5497"
-date:   "October 16-17, 2025"
+date:   "November 11, 2025"
 output:
   html_document:
-    keep_md: false
+    keep_md: true
     toc: true
     toc_depth: 3
 ---

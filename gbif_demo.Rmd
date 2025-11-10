@@ -1,10 +1,11 @@
 ---
 title:  "GBIF data use with R >> rgbif demonstration"
+subtitle: "GBIF Data Access Training, rgbif"
 author: "Dag Endresen, https://orcid.org/0000-0002-2352-5497"
-date:   "2018-02-18, updated 2025-01-16"
+date:   "2025-11-11"
 output:
   html_document:
-    keep_md: false
+    keep_md: true
     toc: true
     toc_depth: 3
 ---

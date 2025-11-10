@@ -1,11 +1,11 @@
 ---
 title: "GBIF data access with R - Introduction"
-subtitle: "BioDATA Advanced, data use course"
+subtitle: "GBIF Data Access Training, rgbif"
 author: "Dag Endresen, https://orcid.org/0000-0002-2352-5497"
-date:   "2018-02-18, updated 2025-01-16, 2025-03-04"
+date:   "2025-11-11"
 output:
   html_document:
-    keep_md: false
+    keep_md: true
     toc: true
     toc_depth: 3
 ---
