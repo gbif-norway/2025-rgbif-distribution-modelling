@@ -51,6 +51,47 @@ sp <- sp$data
 ```
 ![Map of *Hepatica nobilis* (taxonKey=5371699) using `gbifmap()`](./gbif_demo/gbifmap_Hepatica_nobilis.png "gbifmap")
 
+## Request a GBIF occurrence download with DOI
+The GBIF download API issues a DOI for every completed request, which students can cite directly in reports and manuscripts [@https://cran.r-project.org/web/packages/rgbif/refman/rgbif.html#occ_download]. Configure your GBIF credentials once (from your GBIF.org profile) and save them as environment variables (`GBIF_USER`, `GBIF_PWD`, `GBIF_EMAIL`) before running the chunk below.
+
+```{r eval=FALSE, message=FALSE}
+library(rgbif)
+
+# Sanity-check that the credentials are available in your R session
+gbif_user  <- Sys.getenv("GBIF_USER")
+gbif_pwd   <- Sys.getenv("GBIF_PWD")
+gbif_email <- Sys.getenv("GBIF_EMAIL")
+stopifnot(nzchar(gbif_user), nzchar(gbif_pwd), nzchar(gbif_email))
+
+# Reuse the taxon key defined above (e.g., Hepatica nobilis)
+download_key <- occ_download(
+  pred("taxonKey", key),
+  pred("country", "NO"),      # optional filters, here limit to Norway
+  pred_gte("year", 2000),     # keep recent records
+  format = "SIMPLE_CSV",
+  user = gbif_user,
+  pwd = gbif_pwd,
+  email = gbif_email
+)
+
+# Wait for GBIF to finish preparing the dataset (polls every 10 seconds by default)
+occ_download_wait(download_key, status_ping = 10, quiet = FALSE)
+
+# Retrieve metadata, total record count, and the registered DOI
+download_meta <- occ_download_meta(download_key)
+download_doi  <- occ_download_doi(download_key)
+
+download_meta$status         # should be "SUCCEEDED" when complete
+download_meta$totalRecords   # number of occurrences packaged
+download_doi                 # e.g. "10.15468/dl.xxxxxx"
+sprintf("https://doi.org/%s", download_doi)    # handy shareable link
+
+# Optional: grab a ready-to-use citation text for student reports
+occ_download_citation(download_key)
+```
+
+The DOI remains permanently resolvable at `https://doi.org/<download_doi>` and lands on the GBIF download page where students (and reviewers) can access the occurrence archive, metadata, and recommended citation.
+
 ***
 
 ## Preview of dataframe with search results
