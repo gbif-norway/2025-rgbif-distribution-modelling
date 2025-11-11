@@ -10,7 +10,7 @@ output:
     toc_depth: 3
 ---
 
-<!-- gbif_demo.html is generated from gbif_demo.Rmd. Please edit that file -->
+<!-- gbif_demo.html and gbif_demo.md are generated from gbif_demo.Rmd. Edit that file -->
 
 ***
 
@@ -53,6 +53,9 @@ sp <- sp$data
 
 ## Request a GBIF occurrence download with DOI
 The GBIF download API issues a DOI for every completed request, which students can cite directly in reports and manuscripts [@https://cran.r-project.org/web/packages/rgbif/refman/rgbif.html#occ_download]. Configure your GBIF credentials once (from your GBIF.org profile) and save them as environment variables (`GBIF_USER`, `GBIF_PWD`, `GBIF_EMAIL`) before running the chunk below.
+
+Read more from https://docs.ropensci.org/rgbif/articles/gbif_credentials.html 
+
 
 ```{r eval=FALSE, message=FALSE}
 library(rgbif)
